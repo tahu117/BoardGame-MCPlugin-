@@ -1,5 +1,5 @@
 name: BoardGame
-main: boardgame.main.BoardGame
+main: boardgame.Tahu.main.BoardGame
 version: 0.1.0
 
 commands:
