@@ -65,6 +65,21 @@ public class RoleFile {
 		file = new File(folderPath + "/" + gameName + ".yml");
 		return file.exists();
 	}
+	
+	public boolean isRoleExist(String gameName, String exceptRole) {
+		readFile(gameName);
+		String rolePart = saveStr.substring(saveStr.indexOf("\n", saveStr.indexOf("Role :")) + 1);
+
+		String[] pairs = rolePart.split("\n");
+		for (int i = 0; i < pairs.length; i++) {
+			String pair = pairs[i];
+			String[] keyValue = pair.split(":");
+			if(exceptRole.equalsIgnoreCase(keyValue[0].trim())) {
+				return true;
+			}
+		}		
+		return false;
+	}
 
 	private String readFile(String gameName) {
 		saveStr = "";
@@ -117,4 +132,5 @@ public class RoleFile {
 			e.printStackTrace();
 		}
 	}
+	
 }

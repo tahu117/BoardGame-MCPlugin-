@@ -34,10 +34,10 @@ public class BoardGame extends JavaPlugin {
 						sender.sendMessage("/bg <game> start : <game> 보드게임 실행\n" + "/bg <game> stop : <game> 보드게임 종료\n"
 								+ "/bg <game> role : <game> 보드게임 역할 설정");
 					} else if (args[1].equalsIgnoreCase("start")) {
-						rf.setRole(args[1]);
+						rf.setRole(args[0]);
 						wolf.start();
 					} else if (args[1].equalsIgnoreCase("stop")) {
-						rf.delRole(args[1]);
+						rf.delRole(args[0]);
 						wolf.stop();
 					} else if (args[1].equalsIgnoreCase("role")) {
 						if (args.length == 2) {
@@ -56,12 +56,14 @@ public class BoardGame extends JavaPlugin {
 							else if (args.length > 5)
 								sender.sendMessage("더 많은 명령을 치셨습니다.");
 						} else if (args[2].equalsIgnoreCase("except")) {
-							/////////07-13////////////
 							if (args.length == 3) {
 								sender.sendMessage("/bg <game> role except <role>");
-							} else if (args[3].isEmpty()) {
-								sender.sendMessage(args[2] + "의 역할은 없습니다.");
-							}							
+							} else if (rf.isRoleExist(args[0], args[3])) {
+								sender.sendMessage(args[3] + "의 역할은 사용되지 않습니다.");
+								Setting.exceptRole(args[3]);
+							} else {
+								sender.sendMessage(args[3] + "의 역할은 없습니다.");
+							}
 						}
 					} else if (args[1].equalsIgnoreCase("check")) {
 					}

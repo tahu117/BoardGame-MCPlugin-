@@ -1,9 +1,11 @@
 package boardgame.Tahu.main;
 
+import boardgame.Tahu.Role.RoleDB;
+
 public class Wolf {
 	private Setting setting = new Setting();
 	private boolean startCheck = false;
-	
+		
 	public void start() {
 		if(!startCheck) {
 			setting.gameinit();
@@ -13,8 +15,11 @@ public class Wolf {
 	}
 
 	public void stop() {
-		if(startCheck)
+		if(startCheck) {
 			setting.gameinit();
+			RoleDB.exceptRole.clear();
+			startCheck = false;
+		}
 	}
 
 	public void pick() {

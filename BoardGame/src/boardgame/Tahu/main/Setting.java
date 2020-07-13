@@ -13,34 +13,27 @@ import org.bukkit.entity.Player;
 import boardgame.Tahu.Role.Role;
 import boardgame.Tahu.Role.RoleDB;
 
-public class Setting {
-
+public class Setting {	
 	private List<String> confirmedRole = new ArrayList<String>();
 	private List<UUID> playerList = new ArrayList<UUID>();
-	private HashMap<Role, UUID> roleMap = new HashMap<Role, UUID>();
+	private HashMap<UUID, Role> roleMap = new HashMap<UUID, Role>();
 	private String normalName = "villager";
 
 	public void gameinit() {
-		RoleDB.exceptRole.clear();
-		playerList.clear();
+		confirmedRole.clear();		
+		playerList.clear();		
 		roleMap.clear();
+		DummyPlayer.dummyInit();
 	}
 
 	public void gameSetting() {
-		setPlayer();
-		confirm();
-		for (String s : confirmedRole)
-			System.out.println(s);
-		random();
+		setPlayer(); //player 저장
+		confirm(); //role 저장
+		random(); //random
 	}
 
 	public static void exceptRole(String Role) {
-		Set<String> keys = RoleDB.role.keySet();
-		for (String key : keys) {
-			if (key.equalsIgnoreCase(Role)) {
-				RoleDB.exceptRole.add(Role);
-			}
-		}
+		RoleDB.exceptRole.add(Role);
 	}
 
 	public void normalName(String name) {
@@ -90,9 +83,15 @@ public class Setting {
 				playerList.add(DummyPlayer.dummyUuid.get(i));
 		}
 		for (int i = 0; i < confirmedRole.size(); i++) {
-			roleMap.put(Role.getRole(confirmedRole.get(i)), playerList.get(i));
-			System.out.println(i + " : " + confirmedRole.get(i) + " : " + playerList.get(i));
+			roleMap.put(playerList.get(i), new Role(confirmedRole.get(i)));
+			
 		}
+		
+		Set<UUID> keys = roleMap.keySet();
+		for (UUID key : keys) {
+			System.out.println(key + " : " + roleMap.get(key).getRoleName());
+		}
+		
 	}
 
 }
