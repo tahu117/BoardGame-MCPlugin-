@@ -31,11 +31,7 @@ public class Setting {
 		confirm(); //role 저장
 		random(); //random
 	}
-
-	public static void exceptRole(String Role) {
-		RoleDB.exceptRole.add(Role);
-	}
-
+	
 	public void normalName(String name) {
 		normalName = name;
 	}
@@ -54,25 +50,25 @@ public class Setting {
 	}
 
 	private void confirm() {
-		Set<String> keys = RoleDB.role.keySet();
-		for (String key : keys) {
-			if (!RoleDB.exceptRole.isEmpty()) {
-				for (String er : RoleDB.exceptRole)
-					if (!key.equalsIgnoreCase(er)) {
-						for (int i = 0; i < RoleDB.role.get(key); i++)
-							confirmedRole.add(key);
-					}
-			} else {
-				for (int i = 0; i < RoleDB.role.get(key); i++)
-					confirmedRole.add(key);
-			}
-		}
-		if (playerList.size() > confirmedRole.size()) {
-			int moreRole = playerList.size() - confirmedRole.size();
-			for (int i = 0; i < moreRole; i++) {
-				confirmedRole.add(normalName);
-			}
-		}
+//		Set<String> keys = RoleDB.role.keySet();
+//		for (String key : keys) {
+//			if (!RoleDB.exceptRole.isEmpty()) {
+//				for (String er : RoleDB.exceptRole)
+//					if (!key.equalsIgnoreCase(er)) {
+//						for (int i = 0; i < RoleDB.role.get(key); i++)
+//							confirmedRole.add(key);
+//					}
+//			} else {
+//				for (int i = 0; i < RoleDB.role.get(key); i++)
+//					confirmedRole.add(key);
+//			}
+//		}
+//		if (playerList.size() > confirmedRole.size()) {
+//			int moreRole = playerList.size() - confirmedRole.size();
+//			for (int i = 0; i < moreRole; i++) {
+//				confirmedRole.add(normalName);
+//			}
+//		}
 	}
 
 	private void random() {
@@ -87,7 +83,7 @@ public class Setting {
 			
 		}
 		
-		Set<UUID> keys = roleMap.keySet();
+		Set<UUID> keys = roleMap.keySet();//완성시 제거
 		for (UUID key : keys) {
 			System.out.println(key + " : " + roleMap.get(key).getRoleName());
 		}

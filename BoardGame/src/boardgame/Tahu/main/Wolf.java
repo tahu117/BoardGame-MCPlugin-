@@ -22,20 +22,16 @@ public class Wolf {
 		}
 	}
 
-	public void pick() {
-
-	}
-
 	public void day() {
-
+		
 	}
 
 	public void night() {
-
+		
 	}
 
 	public void vote() {
-
+		
 	}
 
 }
