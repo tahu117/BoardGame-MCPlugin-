@@ -3,7 +3,7 @@ package boardgame.Tahu.main;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class BoardGame extends JavaPlugin {
-	public CommandManager cm = new CommandManager(this);
+	private CommandManager cm = new CommandManager(this);
 	@Override
 	public void onEnable() {
 		System.out.println("BoardGame Lodding");

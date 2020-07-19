@@ -10,28 +10,23 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
-import java.util.Set;
 
-public class RoleManager {
-	private String folderPath = null;
+public class RoleManager {	
 	private File file = null;
 	private String saveStr = "Tahu";
 
-	public RoleManager(String path) {
-		folderPath = path;
-		File folderLocation = new File(folderPath);
+	public RoleManager() {
+		File folderLocation = new File(RoleDB.folderPath);
 		folderLocation.mkdir();
 		onFile();
 	}
 
-	public void fs(String gameName) {
-		HashMap<String, Integer> h = RoleDB.role.get(gameName);
-		Set<String> keys = h.keySet();
-		for (String key : keys)
-			System.out.println(key + " " + h.get(key));
-	}
-
-	public void setRoletoFile(String gameName) {
+	public boolean isFileExist(String gameName) {
+		file = new File(RoleDB.folderPath + "/" + gameName + ".yml");
+		return file.exists();
+	}	
+	
+	public void loadRoletoFile(String gameName) {
 		readFile(gameName);
 
 		String rolePart = saveStr.substring(saveStr.indexOf("\n", saveStr.indexOf("Role :")) + 1);
@@ -44,57 +39,12 @@ public class RoleManager {
 			h.put(keyValue[0].trim(), Integer.parseInt(keyValue[1].trim()));
 		}
 		RoleDB.role.put(gameName, h);
-		RoleDB.isSetting.put(gameName, true);
+		RoleDB.isLoad.put(gameName, true);
 	}
 
-	public void unsetRoletoFile(String gameName) {
+	public void unloadRoletoFile(String gameName) {
 		RoleDB.role.clear();
-		RoleDB.isSetting.replace(gameName, false);
-	}
-
-	public void exceptRole(String gameName, String role) {
-		ArrayList<String> l = new ArrayList<String>(RoleDB.exceptRole.get(gameName));
-		l.add(role);
-		
-		if(RoleDB.exceptRole.isEmpty())
-			RoleDB.exceptRole.put(gameName, l);
-		else
-			RoleDB.exceptRole.replace(gameName, l);
-	}
-
-	public void undoExceptRole(String gameName, String role) {
-		ArrayList<String> l = new ArrayList<String>(RoleDB.exceptRole.get(gameName));
-		l.remove(role);
-		RoleDB.exceptRole.replace(gameName, l);
-	}
-
-	public boolean isFileExist(String gameName) {
-		file = new File(folderPath + "/" + gameName + ".yml");
-		return file.exists();
-	}
-
-	public boolean isRoleExist(String gameName, String exceptRole) {
-		readFile(gameName);
-		String rolePart = saveStr.substring(saveStr.indexOf("\n", saveStr.indexOf("Role :")) + 1);
-
-		String[] pairs = rolePart.split("\n");
-		for (int i = 0; i < pairs.length; i++) {
-			String pair = pairs[i];
-			String[] keyValue = pair.split(":");
-			if (exceptRole.equalsIgnoreCase(keyValue[0].trim())) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public boolean isExceptRole(String gameName, String eRole) {
-		for (String key : RoleDB.exceptRole.get(gameName)) {
-			if (key.equalsIgnoreCase(eRole)) {
-				return true;
-			}
-		}
-		return false;
+		RoleDB.isLoad.replace(gameName, false);
 	}
 
 	public void insRoletoFile(String gameName, String role, int count) {
@@ -113,6 +63,7 @@ public class RoleManager {
 		}
 		writeFile(gameName);
 		saveStr = "";
+		onFile();
 	}
 
 	public void delRoletoFile(String gameName, String role) {
@@ -126,7 +77,7 @@ public class RoleManager {
 	}
 
 	public void createFile(String gameName) {
-		file = new File(folderPath + "/" + gameName + ".yml");
+		file = new File(RoleDB.folderPath + "/" + gameName + ".yml");
 		try {
 			if (!file.exists()) {
 				file.createNewFile();
@@ -134,20 +85,22 @@ public class RoleManager {
 			BufferedWriter w = new BufferedWriter(new FileWriter(file));
 			w.append("Useage : 역할과 역할 개수 작성(<Role> : <Count>))\n");
 			w.append("[" + gameName + "]" + " Role :\n");
-			w.append("  Role : Count");
+			w.append("  Role : Count\n");
+//			w.append("[" + gameName + "]" + " Team :\n");
+//			w.append("[" + gameName + "]" + " Role :\n");
 			w.flush();
 			w.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		}		
 	}
 
 	private void readFile(String gameName) {
 		saveStr = "";
 		try {
-			file = new File(folderPath + "/" + gameName + ".yml");
+			file = new File(RoleDB.folderPath + "/" + gameName + ".yml");
 			Scanner s = new Scanner(file);
 
 			while (s.hasNextLine()) {
@@ -162,7 +115,7 @@ public class RoleManager {
 
 	private void writeFile(String gameName) {
 		try {
-			file = new File(folderPath + "/" + gameName + ".yml");
+			file = new File(RoleDB.folderPath + "/" + gameName + ".yml");
 			FileOutputStream fout = new FileOutputStream(file);
 			OutputStreamWriter osw = new OutputStreamWriter(fout);
 
@@ -181,8 +134,8 @@ public class RoleManager {
 	private void onFile() {
 		ArrayList<String> l = new ArrayList<String>();
 		l.add("");
-		for (File fileEntry : new File(folderPath).listFiles()) {
-			RoleDB.isSetting.put(fileEntry.getName().replace(".yml", ""), false);
+		for (File fileEntry : new File(RoleDB.folderPath).listFiles()) {
+			RoleDB.isLoad.put(fileEntry.getName().replace(".yml", ""), false);
 			RoleDB.exceptRole.put(fileEntry.getName().replace(".yml", ""), l);
 		}
 	}

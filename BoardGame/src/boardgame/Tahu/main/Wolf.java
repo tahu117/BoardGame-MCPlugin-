@@ -3,13 +3,13 @@ package boardgame.Tahu.main;
 import boardgame.Tahu.Role.RoleDB;
 
 public class Wolf {
-	private Setting setting = new Setting();
+	private GameSetting setting = new GameSetting();
 	private boolean startCheck = false;
 		
-	public void start() {
+	public void start(String gameName) {
 		if(!startCheck) {
 			setting.gameinit();
-			setting.gameSetting();
+			setting.gameSetting(gameName);
 			startCheck = true;
 		}
 	}
