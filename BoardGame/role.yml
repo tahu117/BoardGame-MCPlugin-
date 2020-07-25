@@ -1,0 +1,14 @@
+# 보드게임 역할 설정
+# made by Tahu
+# Useage1: 역할과 역할 개수 (<Role>: <Count>))
+# Useage2: 역할과 역할 팀 (<Role>: <Team>))
+# Useage3: 역할과 역할 특성 (<Role>: <Trait>))
+# 가능한 Trait (kill / detect / guard / shift / match / alone / change)
+example: 
+  role:
+    role: count
+  team:
+    role: team
+  trait:
+    role: trait
+  config: done

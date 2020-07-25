@@ -5,7 +5,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class BoardGame extends JavaPlugin {
 	private CommandManager cm = new CommandManager(this);
 	@Override
-	public void onEnable() {
+	public void onEnable() {		
 		System.out.println("BoardGame Lodding");
 		getCommand("bggame").setExecutor(cm);
 		getCommand("bgg").setExecutor(cm);
